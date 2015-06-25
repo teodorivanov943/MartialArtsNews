@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head lang="bg">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="css/normalize.css"/>
+	<link rel="stylesheet" href="css/main.css"/>
+	<script src="js/jquery-2.1.3.min.js"></script>
+	<script src="js/main.js"></script>
+	<title>Martial Arts News</title>
+</head>
+<body>
+	<div class="container">
+		<header class="header">
+			<h1>Martial Arts <span>News</span></h1>
+		</header>
+		<nav class="navigation">
+			<ul>
+				<li><a href="index.php.html">НАЧАЛО</a></li>
+				<li>
+					<a href="category.html">КАТЕГОРИИ</a>
+					<ul class="submenu">
+						<li><a href="category_boxing.html">Бокс</a></li>
+						<li><a href="category_kickbox.html">Кикбокс</a></li>
+						<li><a class="active" href="category_mma.html">ММА</a></li>
+					</ul>
+				</li>
+				<li class="mobile_nav"><a  href="category_boxing.html">Бокс</a></li>
+				<li class="mobile_nav"><a  href="category_kickbox.html">Кикбокс</a></li>
+				<li class="mobile_nav"><a class="active" href="category_mma.html">ММА</a></li>
+
+				<li><a href="gallery.html">ГАЛЕРИЯ</a></li>
+				<li><a href="ranklist.html">РАНГЛИСТА</a></li>
+				<li><a href="contact.html">ЗА КОНТАКТИ</a></li>
+			</ul>
+		</nav>
+		<section class="main">
+			<section class="box content">
+				<header class="content_header">
+					<h2>Боксови <span>новини</span></h2>
+				</header>
+				<article class="article_full">
+					<h3>Луйс Тейлър контузен и <span>освободен</span> от UFC</h3>
+					<img src="img/luis.png" alt="luis">
+					<p>Миналата седмица Костас Филипо получи контузия преди двубоя си на 18 януари. Той бе заменен от Луйс Тейлър, който обаче вчера също
+					   се е контузил и няма да може да излезе срещу Uriah Hall.</p>
+					
+					<p>Но лошите новини за него не свършват до тук - UFC прекратиха договора с него още преди той да е стъпил в Октагона.</p>
+					
+					<blockquote><p>"Лоши новини... разтегнах мускул на гърба и няма да мога да се бия следващия уикенд. Бих искал да кажа, че от UFC са
+      					            проявили разбиране, но те ми прекратиха договора. Здравето обаче е по-важно от парите."</p></blockquote> 
+					
+				</article>
+				<article class="article_full">
+					<h3>Джон Джоунс с <span>победа</span> срещу Даниел Кормиер</h3>
+					<img src="img/jon.png" alt="jon">
+					<p> Шампионът на UFC в лека-тежка категория Джон Джоунс (САЩ) надви след съдийско решение Даниел Кормиер (САЩ) в един от най-чаканите 
+					мачове през последните месеци. Шампионът доминираше с отличната си игра в стойка. Претендентът непрекъснато се опитваше да пренесе мача
+					на земя, но това не му се отдаваше.</p>
+					
+					<blockquote><p>"Той е просто човек. Изговори много неща, които ме мотивираха"</p></blockquote>
+					
+					<p> - заяви Джоунс. Кормиер се оправда с факта, че не е успял да намери своя ритъм. Той отдаде заслуженото на победителя:</p>
+					
+					<blockquote><p>"Джон не случайно е най-добрият. Той беше по-добрия тази вечер"</p></blockquote>
+					
+					<p></p> 
+					
+					<p>Тримата съдии точкуваха срещата 49:46. Това беше осмата успешна защита на Джоунс.</p>
+				</article>
+			</section>
+			<aside class="sidebar">
+				<section class="box survey">
+					<header class="survey_header">
+						<h2>Анкета</h2>
+					</header>
+					<p>Кого бихте определили като най-велик боксьор в историята на спорта?</p>
+					<form method="post" action="category_mma.html" onsubmit="return false;">
+						<div class="survey_row">
+							<input id="1" type="radio" name="survey" value="1"/>
+							<span class="survey_text 1">Мохамед Али</span>
+						</div>
+						<div class="survey_row">
+							<input id="2" type="radio" name="survey" value="1"/>
+							<span class="survey_text 2">Роки Марчиано</span>
+						</div>
+						<div class="survey_row">
+							<input id="3" type="radio" name="survey" value="1"/>
+							<span class="survey_text 3">Майк Тайсън</span>
+						</div>
+						<div class="survey_row">
+							<input id="4" type="radio" name="survey" value="1"/>
+							<span class="survey_text 4">Флойд Мейуедър</span>
+						</div>
+						<div class="survey_row">
+							<input id="5" type="radio" name="survey" value="1"/>
+							<span class="survey_text 5">Джо Луис</span>
+						</div>
+						
+						<input class="submit_btn" type="submit" value="Гласувай" onclick="vote()">
+					</form>
+				</section>
+				<section class="box social_networks">
+					<header class="social_header">
+						<h2>Social <span>networks</span></h2>
+					</header>
+					<img src="img/fb.png" alt="facebook" class="share" id="Facebook"/>
+					<img src="img/twtr.png" alt="twitter" class="share" id="Twitter"/>
+					<img src="img/gplus.png" alt="googleplus" class="share" id="Google+"/>
+				</section>
+			</aside>
+			<div class="clearfix"></div>
+		</section>
+		<footer class="footer">
+			<p>Martial Arts News Copyright &#169; 2013-2015</p>
+		</footer>
+	</div>
+</body>
+</html>
