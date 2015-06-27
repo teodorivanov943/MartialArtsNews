@@ -1,13 +1,11 @@
 <?php
-chdir(__DIR__);
-include 'classes/DB.php';
-$directoryPath = __FILE__;
-$paths = explode('/', $directoryPath);
-$activeNavPage['index'] = true;
-$page = end($paths) ;
+include (DIRECTORY_SEPARATOR.'bootstrap.php');
 
 $db = DB::getInstance();
 $query = 'SELECT * FROM news LIMIT 3';
 $news = $db->runQuery($query);
 
-include 'view/template.php';
+$activeNavPage['index'] = true;
+
+$view = new View(getcwd().DIRECTORY_SEPARATOR.'view', 'template');
+$view->render('index', array('news' => $news, 'activeNavPage' => $activeNavPage));
