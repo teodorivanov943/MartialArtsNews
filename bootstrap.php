@@ -12,5 +12,6 @@ function exception_error_handler($severity, $message, $file, $line) {
 }
 ("exception_error_handler");
 
+include 'classes/File.php';
 include 'classes/DB.php';
 include 'classes/View.php';

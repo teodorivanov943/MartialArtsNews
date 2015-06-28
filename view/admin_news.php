@@ -1,5 +1,7 @@
 <section>
     <div class="container">
+        <a class="btn btn-success pull-right" href="admin_news_add.php"
+           role="button">Добави</a>
         <table class="table">
             <caption>Таблица с новините</caption>
             <thead>
@@ -20,8 +22,14 @@
                     <td><?php echo $new['content']; ?></td>
                     <td><?php echo $new['created_at']; ?></td>
                     <td><?php echo $new['last_update']; ?></td>
-                    <td><a class="btn btn-warning" href="#" role="button">Редактирай</a></td>
-                    <td><a class="btn btn-danger" href="#" role="button">Изтрий</a></td>
+                    <td>
+                        <a class="btn btn-warning" href="admin_news_edit.php?news_id=<?php echo $new['id']; ?>"
+                           role="button">Редактирай</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" href="admin_news_delete.php?news_id=<?php echo $new['id']; ?>"
+                           role="button">Изтрий</a>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
