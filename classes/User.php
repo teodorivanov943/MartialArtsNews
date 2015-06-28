@@ -13,5 +13,9 @@
  */
 class User
 {
+    //TODO: функция регистрация (данни от формата) - вътре валидацията
+    //TODO: полета: username, password, email
+    //TODO: ф-ия подавам масив от данните от формата setter
+    //TODO: user safe - запис в базата данни create, findById, getAll()
     //put your code here
 }

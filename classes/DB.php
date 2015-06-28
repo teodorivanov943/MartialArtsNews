@@ -29,6 +29,7 @@ class DB
      */
     public static function getInstance()
     {
+        
         if(self::$instance == NULL)
         {
             self::$instance = new DB();
@@ -38,22 +39,71 @@ class DB
         return self::$instance;
     }
     
-    public function runQuery($query)
+    public function runQuery($query, $args)
     {
-        $q = mysqli_query($this->connection, $query);
+        $placeholderCnt = substr_count($query, '?');
+        $resultIndex = 0;
         
-        if(!$q)
+        $stmt = mysqli_prepare($this->connection, $query);
+        if(!$stmt)
+            throw new Exception('Query statement problem'); 
+        
+        //getting bind type and bind value
+        foreach($args as $v)
         {
-            throw new Exception('Query execution problem');
+            $binded['statement'] = $stmt;
+            $binded['type'] = "";
+            $valueIndex = 0;
+            
+            foreach($v as $vv)
+            {
+                $binded['type'] = $binded['type'].substr(gettype ($vv), 0, 1);
+                if ($binded['type'] == 'N')
+                    $binded['type'] = 'i';
+                
+                $binded[$valueIndex] = $vv;
+                $valueIndex++;
+            }
+            
+            //making the values in $binded references
+            //because of the call_user_func_array
+            
+            $bindedRef = array();
+            $bindedRef['statement'] = $binded['statement'];
+            $bindedRef['type'] = $binded['type'];
+            
+            foreach ($binded as $key => $value)
+            {
+                if($key !== 'statement' && $key !== 'type')
+                {
+                    $bindedRef[$key] = &$binded[$key];
+                }
+            }
+            
+            if(!call_user_func_array('mysqli_stmt_bind_param', $bindedRef))
+                throw new Exception('Query binding parameters problem');
+            
+            if($stmt->execute())
+            {
+                $res = $stmt->get_result();
+                
+                while($row = $res->fetch_array(MYSQLI_ASSOC))
+                {
+                    if($res->num_rows == 1)
+                        $result[$resultIndex] = $row;
+                    else
+                        $result[$resultIndex][] = $row;
+                                       
+                }
+                $resultIndex++;
+            }
+            else
+                throw new Exception ('Query execution problem');
         }
         
-        $realResult = array();
-        while ($result = $q->fetch_assoc())
-        {
-            $realResult[] = $result;
-        }
-        
-        
-        return $realResult;        
+        $stmt->close();
+       
+        return $result;
     }
 }
+//TODO: един резултат или много ... аргументи към заявките
