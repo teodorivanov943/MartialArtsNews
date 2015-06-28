@@ -55,11 +55,9 @@ class DB
         $binded['type'] = "";
         $valueIndex = 0;
         //getting bind type and bind value
-        foreach ($args as $v)
-        {
+        foreach ($args as $v) {
             $binded['type'] = $binded['type'] . substr(gettype($v), 0, 1);
-            if ($binded['type'] == 'N')
-            {
+            if ($binded['type'] == 'N') {
                 $binded['type'] = 'i';
             }
 
@@ -74,23 +72,24 @@ class DB
         $bindedRef['statement'] = $binded['statement'];
         $bindedRef['type'] = $binded['type'];
 
-        foreach ($binded as $key => $value)
-        {
-            if ($key !== 'statement' && $key !== 'type')
-            {
+        foreach ($binded as $key => $value) {
+            if ($key !== 'statement' && $key !== 'type') {
                 $bindedRef[$key] = &$binded[$key];
             }
         }
-
-        if (!call_user_func_array('mysqli_stmt_bind_param', $bindedRef))
-        {
-            throw new Exception('Query binding parameters problem');
+        if (count($args) != 0) {
+            if (!call_user_func_array('mysqli_stmt_bind_param', $bindedRef)) {
+                throw new Exception('Query binding parameters problem');
+            }
         }
-
         if ($stmt->execute())
         {
             $res = $stmt->get_result();
-            
+            if(is_bool($res))
+            {
+                return;
+            }
+
             if($resultType == self::SINGLE_RESULT)
             {
                 $result = $res->fetch_array(MYSQLI_ASSOC);
@@ -116,5 +115,3 @@ class DB
     }
 
 }
-
-//TODO: един резултат или много ... аргументи към заявките
