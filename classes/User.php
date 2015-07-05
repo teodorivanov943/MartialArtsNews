@@ -51,14 +51,15 @@ class User
     
     public function saveUser($db)
     {
-        $query = 'SELECT COUNT(*) FROM users WHERE username=? OR email=?';
+        $query = 'SELECT COUNT(*) as cnt FROM users WHERE username=? OR email=?';
         
         $params = array();
         $params[0] = $this->username;
         $params[1] = $this->email;
         
-        $result = $db->runQuery($query, $params);
-        if(!$result)
+        $result = $db->runQuery($query, $params, DB::SINGLE_RESULT);
+        
+        if($result['cnt'] != 0)
         {
             throw new Exception('Username/E-mail already exists');
         }
@@ -105,8 +106,8 @@ class User
         $params[0] = $username;
         
         $hash = $db->runQuery($query, $params, DB::SINGLE_RESULT);
-        
-        if(!password_verify($password, $hash))
+ 
+        if(!password_verify($password, $hash['password']))
         {
             throw new Exception('Invalid username/password');
         }

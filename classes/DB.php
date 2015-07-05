@@ -90,7 +90,6 @@ class DB
         
         if (count($args) != 0) 
         {
-            echo '<pre>'.print_r($this->bindArray($stmt, $args), true).'</pre>';
             if (!call_user_func_array('mysqli_stmt_bind_param', $this->bindArray($stmt,$args))) 
             {
                 throw new Exception('Query binding parameters problem');
