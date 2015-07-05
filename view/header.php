@@ -2,10 +2,13 @@
 <html>
     <head lang="bg">
         <meta charset="UTF-8">
+        
         <link rel="stylesheet" href="assets/css/normalize.css"/>
         <link rel="stylesheet" href="assets/css/main.css"/>
+        
         <script src="assets/js/jquery-2.1.3.min.js"></script>
         <script src="assets/js/main.js"></script>
+        
         <title>Martial Arts News</title>
     </head>
     <body>

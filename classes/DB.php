@@ -2,7 +2,6 @@
 
 class DB
 {
-
     const SINGLE_RESULT = 1;
     const MULTIPLE_RESULT = 2;
     
@@ -42,76 +41,87 @@ class DB
         return self::$instance;
     }
 
+    private function &bindArray($stmt, array $args)
+    {
+        $binded['statement'] = $stmt;
+        $binded['type'] = "";
+        $valueIndex = 0;
+        
+        foreach ($args as $v) 
+        {
+            $binded['type'] = $binded['type'] . substr(gettype($v), 0, 1);
+            $binded[$valueIndex] = $v;
+            $valueIndex++;
+        }
+        return $this->refBindArray($binded);
+    }
+    
+    private function &refBindArray(array $arr)
+    {
+        $bindedRef = array();
+        $bindedRef['statement'] = $arr['statement'];
+        $bindedRef['type'] = $arr['type'];
+
+        foreach ($arr as $key => $value) 
+        {
+            if ($key !== 'statement' && $key !== 'type') 
+            {
+                $bindedRef[$key] = &$arr[$key];
+            }
+        }
+        return $bindedRef;
+    }
+    
     public function runQuery($query, $args = array(),
             $resultType = self::MULTIPLE_RESULT)
     {
         $placeholderCnt = substr_count($query, '?');
-
+        
+        if($placeholderCnt != 0 && $placeholderCnt / count($args) != 1)
+        {
+            throw new Exception('Parameters number problem');
+        }
+        
         $stmt = mysqli_prepare($this->connection, $query);
         if (!$stmt)
+        {
             throw new Exception('Query statement problem');
-
-        $binded['statement'] = $stmt;
-        $binded['type'] = "";
-        $valueIndex = 0;
-        //getting bind type and bind value
-        foreach ($args as $v) {
-            $binded['type'] = $binded['type'] . substr(gettype($v), 0, 1);
-            if ($binded['type'] == 'N') {
-                $binded['type'] = 'i';
-            }
-
-            $binded[$valueIndex] = $v;
-            $valueIndex++;
         }
-
-        //making the values in $binded references
-        //because of the call_user_func_array
-
-        $bindedRef = array();
-        $bindedRef['statement'] = $binded['statement'];
-        $bindedRef['type'] = $binded['type'];
-
-        foreach ($binded as $key => $value) {
-            if ($key !== 'statement' && $key !== 'type') {
-                $bindedRef[$key] = &$binded[$key];
-            }
-        }
-        if (count($args) != 0) {
-            if (!call_user_func_array('mysqli_stmt_bind_param', $bindedRef)) {
+        
+        if (count($args) != 0) 
+        {
+            echo '<pre>'.print_r($this->bindArray($stmt, $args), true).'</pre>';
+            if (!call_user_func_array('mysqli_stmt_bind_param', $this->bindArray($stmt,$args))) 
+            {
                 throw new Exception('Query binding parameters problem');
             }
         }
-        if ($stmt->execute())
-        {
-            $res = $stmt->get_result();
-            if(is_bool($res))
-            {
-                return;
-            }
-
-            if($resultType == self::SINGLE_RESULT)
-            {
-                $result = $res->fetch_array(MYSQLI_ASSOC);
-            }
-                
-            else
-            {
-                while ($row = $res->fetch_array(MYSQLI_ASSOC))
-                {
-                    $result[] = $row;
-                }
-            }
-            
-        }
-        else
+        if (!$stmt->execute())
         {
             throw new Exception('Query execution problem');
         }
+        
+        $res = $stmt->get_result();
+        
+        if(is_bool($res))
+        {
+            return;
+        }
 
+        if($resultType == self::SINGLE_RESULT)
+        {
+            $result = $res->fetch_array(MYSQLI_ASSOC);
+        }
+                
+        else
+        {
+            while ($row = $res->fetch_array(MYSQLI_ASSOC))
+            {
+                $result[] = $row;
+            }
+        }
+        
         $stmt->close();
-
         return $result;
     }
-
 }

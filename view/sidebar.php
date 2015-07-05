@@ -1,4 +1,18 @@
 <aside class="sidebar">
+    <form method="POST"  class="reg_form">
+        <div class="register">
+            <label>Потребителско име</label>
+            <input type="text">
+        </div>
+        
+        <div class="register">
+            <label>Парола</label>
+            <input type="password">
+        </div>
+        
+        <input class="submit_btn" type="submit" value="Log in">
+        <a href="registration.php">Registration</a>
+    </form>
     <section class="box survey">
         <header class="survey_header">
             <h2>Анкета</h2>

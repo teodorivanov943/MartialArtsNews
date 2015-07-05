@@ -47,7 +47,25 @@ html, body{
 
 .content{
 	float: left;
-	width: 640px;
+	width: 640px
+}
+
+
+.reg_form > a{
+        font-style: italic;
+        font-size: 20px;
+}
+
+.register{
+        margin: 10px auto;
+        color: #fff;
+}
+
+.register > input{
+        margin-top: 5px;
+        display: block;
+        width: 65%;
+        clear: both;
 }
 
 .sidebar{
@@ -116,11 +134,11 @@ html, body{
 }
 
 /* header style */
-.header h1{
+.header h1, h2{
 	color: #fff;
 }
 
-.header h1 span{
+.header h1 > span, h2 > span{
 	color: #f7313b;
 }
 

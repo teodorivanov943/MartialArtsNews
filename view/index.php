@@ -1,5 +1,5 @@
 <section class="content">
-
+    
     <section class="box last_news">
         <header class="last_news_header">
             <h2>Последни <span>новини</span></h2>

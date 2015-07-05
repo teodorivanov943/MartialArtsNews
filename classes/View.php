@@ -140,5 +140,4 @@ class View {
             throw new \Exception("Invalid view file");
         }
     }
-
 }
