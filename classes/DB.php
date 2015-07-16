@@ -78,7 +78,7 @@ class DB
     {
         $placeholderCnt = substr_count($query, '?');
 
-        if ($placeholderCnt != 0 && $placeholderCnt / count($args) != 1)
+        if (count($args) != 0 && $placeholderCnt / count($args) != 1)
         {
             throw new Exception('Parameters number problem');
         }
@@ -98,7 +98,7 @@ class DB
         }
         if (!$stmt->execute())
         {
-
+            echo $this->connection->error;
             throw new Exception('Query execution problem');
         }
 

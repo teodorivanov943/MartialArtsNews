@@ -4,21 +4,15 @@ require_once 'ActiveRecord' . DIRECTORY_SEPARATOR . 'Model.php';
 require_once 'classes/User.php';
 $params = array
     (
-    'username' => 'blabla',
+    'username' => 'blaabla',
     'password' => 'qwerty',
-    'email' => 'teodosrivanov943@gmail.com'
+    'email' => 'teodosrsivanov943@gmail.com'
 );
+
+Model::init();
 $user = new User();
-$user->create($params);
-exit;
-include ('classes/User.php');
-include ('classes/DB.php');
-
-$db = DB::getInstance();
-
-$result = User::getAll($db);
-$id = User::findByID($db, 3);
-echo '<pre>' . print_r($result, true) . '</pre><br>';
-
-echo '<pre>' . print_r($id, true) . '</pre>';
-
+User::validate($params['username'], $params['password'], $params['email']);
+$user = User::create($params);
+var_dump($user);
+//exit;
+$user->delete();
