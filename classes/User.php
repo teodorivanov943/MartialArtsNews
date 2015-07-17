@@ -27,21 +27,23 @@ class User extends Model
         }
     }
 
-    public static function logIn($db, $username, $password)
+    public static function logIn($username, $password)
     {
+        $db = parent::getConnection();
+
         if (isset($_SESSION))
         {
             throw new Exception('User already logged');
         }
 
-        $query = 'SELECT password FROM users WHERE username=?';
+        $query = 'SELECT password FROM ' . get_class() . ' WHERE username=?';
 
         $params = array();
         $params[0] = $username;
 
-        $hash = $db->runQuery($query, $params, DB::SINGLE_RESULT);
+        $res = $db->runQuery($query, $params, DB::SINGLE_RESULT);
 
-        if (!password_verify($password, $hash['password']))
+        if ($res['password'] != $password)
         {
             throw new Exception('Invalid username/password');
         }

@@ -4,60 +4,61 @@ require_once 'classes/DB.php';
 
 class Model
 {
+
     private static $connection = NULL;
     private $property;
 
     public function __set($name, $value)
     {
         $class = get_called_class();
-        
+
         $query = 'DESCRIBE ' . $class;
         $dbSchema = self::$connection->runQuery($query);
         $match = false;
-        
+
         foreach ($dbSchema as $val)
         {
-            if($val['Field'] == $name)
+            if ($val['Field'] == $name)
             {
                 $match = true;
                 $this->property[$name] = $value;
                 break;
             }
         }
-        if(!$match)
+        if (!$match)
         {
             throw new Exception('Property does not match table field');
         }
     }
-    
+
     public function __get($name)
     {
         $class = get_called_class();
-        
+
         $query = 'DESCRIBE ' . $class;
         $dbSchema = self::$connection->runQuery($query);
         $match = false;
 
         foreach ($dbSchema as $val)
         {
-            if($val['Field'] == $name)
+            if ($val['Field'] == $name)
             {
                 $match = true;
                 return $this->property[$name];
             }
         }
-        if(!$match)
+        if (!$match)
         {
             throw new Exception('Property does not exist');
         }
     }
-    
+
     public static function init()
     {
         self::$connection = DB::getInstance();
     }
 
-    public function getConnection()
+    public static function getConnection()
     {
         return self::$connection;
     }
@@ -152,29 +153,29 @@ class Model
     public static function findByID($id)
     {
         $class = get_called_class();
-        
+
         //id = tablename + _id
         $query = 'SELECT * FROM ' . $class . ' WHERE ' . strtolower($class) . '_id=?';
 
         $param[0] = $id;
         $properties = self::$connection->runQuery($query, $param, DB::SINGLE_RESULT);
 
-        if (!$params)
+        if (!$properties)
             throw new Exception('Record does not exist');
 
         $result = self::create($properties);
         return $result;
     }
-    
+
     public static function getAll()
     {
         $class = get_called_class();
-        
+
         $query = 'SELECT * FROM ' . $class;
-        
+
         $result = self::$connection->runQuery($query);
-        
+
         return $result;
     }
-    
+
 }

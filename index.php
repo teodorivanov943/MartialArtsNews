@@ -10,9 +10,5 @@ $params = array
 );
 
 Model::init();
-$user = new User();
-User::validate($params['username'], $params['password'], $params['email']);
-$user = User::create($params);
-var_dump($user);
-//exit;
-$user->delete();
+$users = User::getAll();
+echo '<pre>'.print_r($users, true).'</pre>';
