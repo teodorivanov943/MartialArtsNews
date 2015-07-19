@@ -1,18 +1,23 @@
 <aside class="sidebar">
-    <form method="POST"  class="reg_form">
+    <form action="login.php" method="POST"  class="reg_form">
         <div class="register">
             <label>Потребителско име</label>
-            <input type="text">
+            <input type="text" name="username">
         </div>
         
         <div class="register">
             <label>Парола</label>
-            <input type="password">
+            <input type="password" name="password">
         </div>
         
         <input class="submit_btn" type="submit" value="Log in">
         <a href="registration.php">Registration</a>
     </form>
+    <?php if(isset($loginError)): ?>
+        
+            <p> <?php echo $loginError; ?> </p>
+           
+    <?php endif;?>
     <section class="box survey">
         <header class="survey_header">
             <h2>Анкета</h2>

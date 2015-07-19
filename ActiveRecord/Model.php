@@ -1,24 +1,21 @@
 <?php
 
-require_once 'classes/DB.php';
-
 class Model
 {
 
     private static $connection = NULL;
+    private static $tableName;
     private $property;
-
+    private $dbScheme;
+    
+    
     public function __set($name, $value)
     {
-        $class = get_called_class();
-
-        $query = 'DESCRIBE ' . $class;
-        $dbSchema = self::$connection->runQuery($query);
         $match = false;
 
-        foreach ($dbSchema as $val)
+        foreach (self::getScheme() as $scheme)
         {
-            if ($val['Field'] == $name)
+            if ($scheme['Field'] == $name)
             {
                 $match = true;
                 $this->property[$name] = $value;
@@ -33,15 +30,11 @@ class Model
 
     public function __get($name)
     {
-        $class = get_called_class();
-
-        $query = 'DESCRIBE ' . $class;
-        $dbSchema = self::$connection->runQuery($query);
         $match = false;
 
-        foreach ($dbSchema as $val)
+        foreach (self::getScheme() as $scheme)
         {
-            if ($val['Field'] == $name)
+            if ($scheme['Field'] == $name)
             {
                 $match = true;
                 return $this->property[$name];
@@ -58,42 +51,46 @@ class Model
         self::$connection = DB::getInstance();
     }
 
-    public static function getConnection()
+    public static function runQuery($query, $args = array(), $resultType = DB::MULTIPLE_RESULT)
     {
-        return self::$connection;
+        return self::$connection->runQuery($query, $args, $resultType);
     }
 
+    private function getScheme()
+    {
+        if (!$this->dbScheme)
+        {
+            $query = 'DESCRIBE ' . $this->getTableName();
+            $dbSchema = self::$connection->runQuery($query);
+
+            $this->dbScheme = $dbSchema;
+        }
+        return $this->dbScheme;
+    }
+
+    private static function getTableName()
+    {
+        self::$tableName = get_called_class();
+        return self::$tableName;
+    }
+
+    
     public static function create(array $params)
     {
-        $class = get_called_class();
-
-        $query = 'DESCRIBE ' . $class;
-        $dbSchema = self::$connection->runQuery($query);
-
+        $class = self::getTableName();
         $result = new $class;
 
         foreach ($params as $key => $value)
         {
-            $match = false;
-            foreach ($dbSchema as $scheme)
-            {
-                if ($key == $scheme['Field'])
-                {
-                    $result->property[$key] = $value;
-                    $match = true;
-                }
-            }
-            if (!$match)
-                throw new Exception('Parameters problem');
+            $result->$key = $value;
         }
-
+            
         return $result;
     }
 
     public function save()
     {
-        $class = get_called_class();
-
+        //TODO: Move to queryBuilder
         $fields = "";
         $values = array();
         $qmarks = "";
@@ -117,15 +114,13 @@ class Model
             $qmarks = $qmarks . '?, ';
         }
 
-        $query = 'INSERT INTO ' . $class . '(' . $fields . ') VALUES(' . $qmarks . ')';
+        $query = 'INSERT INTO ' . self::getTableName() . '(' . $fields . ') VALUES(' . $qmarks . ')';
 
         self::$connection->runQuery($query, $values);
     }
 
     public function delete()
     {
-        $class = get_called_class();
-
         $condition = "";
         $values = array();
         $iterCnt = 0;
@@ -145,18 +140,17 @@ class Model
             $values[] = $val;
         }
 
-        $query = 'DELETE FROM ' . $class . ' WHERE ' . $condition;
+        $query = 'DELETE FROM ' . self::getTableName() . ' WHERE ' . $condition;
 
         self::$connection->runQuery($query, $values);
     }
 
     public static function findByID($id)
     {
-        $class = get_called_class();
-
         //id = tablename + _id
-        $query = 'SELECT * FROM ' . $class . ' WHERE ' . strtolower($class) . '_id=?';
-
+        $query = 'SELECT * FROM ' . self::getTableName()
+                . ' WHERE ' . strtolower(self::getTableName()) . '_id=?';
+        
         $param[0] = $id;
         $properties = self::$connection->runQuery($query, $param, DB::SINGLE_RESULT);
 
@@ -164,14 +158,37 @@ class Model
             throw new Exception('Record does not exist');
 
         $result = self::create($properties);
+        
         return $result;
     }
 
+    public static function where(array $params)
+    {        
+        $query = 'SELECT * FROM ' . self::getTableName() . ' WHERE ';
+        $values = array();
+        $iterCnt = 0;
+        foreach ($params as $key => $val)
+        {
+            $iterCnt++;
+            
+            if($iterCnt == count($params))
+            {
+                $query = $query . $key . ' = ?'; 
+                $values[] = $val;
+                break;
+            }
+            $query = $query . $key . ' = ? AND '; 
+            $values[] = $val;
+        }
+        //echo '<pre>'.print_r($values, true).'</pre>';
+        $result = self::$connection->runQuery($query, $values, DB::SINGLE_RESULT);
+        //$result ? return $result : return NULL;
+        return ($result) ? self::create($result) : NULL;
+    }
+    
     public static function getAll()
     {
-        $class = get_called_class();
-
-        $query = 'SELECT * FROM ' . $class;
+        $query = 'SELECT * FROM ' . self::getTableName();
 
         $result = self::$connection->runQuery($query);
 

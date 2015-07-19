@@ -3,7 +3,7 @@
         <h2>Форма за <span>регистрация</span></h2>
     </header>
     
-    <form action="<?php $_PHP_SELF?>" method="POST" class="reg_form">
+    <form action="registration.php" method="POST" class="reg_form">
         <div class="register">
             <label>Потребителско име: </label>
             <input type="text" name="username">
@@ -29,4 +29,14 @@
         </div>    
         
     </form>
+    <?php if(isset($errors)): ?>
+        
+        <?php foreach($errors as $err)
+        {
+            echo $err . '<br>';
+        }
+         ?>   
+           
+    <?php endif;?>
+    
 </section>

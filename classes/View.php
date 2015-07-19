@@ -80,17 +80,22 @@ class View {
     public function render($view = '', array $params = array())
     {
         $this->setView($view);
-        $this->setParams($params);
-
+        foreach($params as $key => $value)
+        {
+            $this->addParam($key, $value);
+        }
+          
         foreach($this->params as $key => $value)
         {
             $$key = $value;
         }
-
+        
         $this->checkViewDirectory();
         $this->checkLayout();
         $this->checkView();
-
+        
+        
+        
         $view = $this->getViewFile();
         include $this->getLayoutFile();
     }
@@ -137,7 +142,7 @@ class View {
     private function checkView()
     {
         if(!is_file($this->getViewFile())){
-            throw new \Exception("Invalid view file");
+            throw new Exception("Invalid view file");
         }
     }
 }

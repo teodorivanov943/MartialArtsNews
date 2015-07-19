@@ -6,8 +6,8 @@ class User extends Model
     //password by reference, because of hashing
     public static function validate($username, &$password, $email)
     {
-        if (!(strlen($username) > 4 && strlen($username) < 25) &&
-                (preg_match('/^[a-zA-Z]+$/', $username[0]) && preg_match("/^[a-zA-Z0-9_ ]+$/", $username)))
+        if (!(strlen($username) > 4 && strlen($username) < 25) ||
+            !preg_match('/^[a-zA-Z]+$/', $username[0]) || !preg_match("/^[a-zA-Z0-9_ ]+$/", $username))
         {
             throw new Exception('Invalid username');
         }
@@ -29,35 +29,19 @@ class User extends Model
 
     public static function logIn($username, $password)
     {
-        $db = parent::getConnection();
+        $user = self::where(array('username' => $username));
 
-        if (isset($_SESSION))
+        if (!$user || !password_verify($password, $user->password))
         {
-            throw new Exception('User already logged');
+            return NULL;
         }
 
-        $query = 'SELECT password FROM ' . get_class() . ' WHERE username=?';
-
-        $params = array();
-        $params[0] = $username;
-
-        $res = $db->runQuery($query, $params, DB::SINGLE_RESULT);
-
-        if ($res['password'] != $password)
-        {
-            throw new Exception('Invalid username/password');
-        }
-
-        session_start();
-        $_SESSION['logged'] = true;
+        return $user;
     }
 
-    public static function LogOut()
+    public function LogOut()
     {
-        if (isset($_SESSION))
-        {
-            session_destroy();
-        }
+        
     }
 
 }
