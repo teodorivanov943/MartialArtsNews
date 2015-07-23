@@ -38,10 +38,4 @@ class User extends Model
 
         return $user;
     }
-
-    public function LogOut()
-    {
-        
-    }
-
 }

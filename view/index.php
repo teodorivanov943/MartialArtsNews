@@ -7,24 +7,13 @@
         <?php foreach($news as $new): ?>
         <article class="article">
             <h3><?php echo $new['title']; ?></h3>
-            <img src="assets/img/dalakliev.png" alt="dalakliev" height="150" width="150"/>
-            <p><?php echo $new['content']; ?></p>
+            <img src="assets/img/<?php echo $new['photo'];?>" alt="<?php echo $new['photo']?>" height="150" width="150"/>
+            <p><?php
+                    mb_internal_encoding("UTF-8");
+                    echo mb_substr($new['content'], 0, 170) . '...'; 
+            ?></p>
         </article>
         <?php endforeach; ?>
-        <!--
-        <article class="article">
-            <h3>Джон Джоунс с <span>победа </span>срещу Кормиер</h3>
-            <img src="assets/img/jon.png" alt="jones" height="150" width="150"/>
-            <p>Шампионът на UFC в лека-тежка категория Джон Джоунс надви2 след съдийско решение Даниел Кормиер в
-                един от най-чаканите	мачове през последните месеци. Шампионът доминираше с отличната си игра в стойка.</p>
-        </article>
-        <article  class="article">
-            <h3>Луйс Тейлър контузен и <span>освободен </span>от UFC</h3>
-            <img src="assets/img/luis.png" alt="taylor" height="150" width="150"/>
-            <p>Миналата седмица Костас Филипо получи контузия преди двубоя си на 18 януари. Той бе заменен от Луйс Тейлър,
-                който обаче вчера също се е контузил и няма да може да излезе срещу Урая Хол.</p>
-        </article>
-        -->
         <div class="clearfix"></div>
     </section>
     <section class="box last_photos">

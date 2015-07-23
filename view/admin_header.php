@@ -32,6 +32,9 @@
                 <li>
                     <a href="admin_news.php">Новини</a>
                 </li>
+                <li>
+                    <a href="logout.php">Изход</a>
+                </li>
             </ul>
         </nav>
     </div>

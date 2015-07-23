@@ -1,8 +1,8 @@
 <?php
-include 'bootstrap.php';
+require_once 'bootstrap.php';
 include 'classes/User.php';
 
-if(isset($_POST))
+if(!empty($_POST))
 {
     $username = isset($_POST['username']) ? $_POST['username'] : "";
     $password = isset($_POST['password']) ? $_POST['password'] : "";
@@ -12,6 +12,7 @@ if(isset($_POST))
     {
         $_SESSION['logged'] = true;
         $_SESSION['user_id'] = $user->user_id;
+        $_SESSION['is_admin'] = $user->is_admin;
     }
     else
     {

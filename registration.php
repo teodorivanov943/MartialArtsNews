@@ -3,10 +3,15 @@ include 'bootstrap.php';
 include 'classes/User.php';
 
 $view = new View('view', 'template');
-$view->render('registration');
 
+if(isset($_SESSION['logged']) && $_SESSION['logged'])
+{
+    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : NULL;
+    $user=User::findByID($user_id);
+    $view->addParam('user', $user);
+}
 
-if(isset($_POST))
+if(!empty($_POST))
 {
     $username = isset($_POST['username']) ? $_POST['username'] : "";
     $password = isset($_POST['password']) ? $_POST['password'] : "";
@@ -34,7 +39,7 @@ if(isset($_POST))
     {
         $errors[] = 'Невалиден e-mail';
     }    
-    if(!isset($errors))
+    if(empty($errors))
     {
         try
         {
@@ -42,22 +47,24 @@ if(isset($_POST))
         }
         catch(Exception $e)
         {
-            $errors[] = 'Database save problem';
-            $view->addParam('errors', $errors);
+            $msg[] = 'Database save problem';
+            $view->addParam('msg', $msg);
         }
         
         if(!isset($msg))
         {
-            $success = "Вашата регистрация е успешна";
+            $success[] = "Вашата регистрация е успешна";
             $user = User::create(['username' => $username, 'password' => $password, 'email' => $email]);
             $user->save();
-            $view->addParam('success', $success);
+            $view->addParam('msg', $success);
         }
         
     }
     else
     {
-        $view->addParam('error', $errors);
+        $view->addParam('msg', $errors);
     }
     
 }
+
+$view->render('registration');

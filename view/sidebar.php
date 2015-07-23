@@ -1,5 +1,5 @@
 <aside class="sidebar">
-    <form action="login.php" method="POST"  class="reg_form">
+    <form action="login.php" method="POST" <?php if(isset($user)) echo 'style="display: none;"';?> class="reg_form">
         <div class="register">
             <label>Потребителско име</label>
             <input type="text" name="username">

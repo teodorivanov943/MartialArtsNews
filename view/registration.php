@@ -29,13 +29,11 @@
         </div>    
         
     </form>
-    <?php if(isset($errors)): ?>
+    <?php if(isset($msg)): ?>
         
-        <?php foreach($errors as $err)
-        {
-            echo $err . '<br>';
-        }
-         ?>   
+        <?php foreach($msg as $m):?>
+    <p><?php  echo $m;?></p>
+        <?php endforeach; ?>   
            
     <?php endif;?>
     

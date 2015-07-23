@@ -17,6 +17,7 @@ html, body{
 }
 
 .navigation{
+        clear: both;
 	background-color: #000;
 	border-top: 1px solid #fff;
 	border-bottom: 1px solid #fff;
@@ -140,6 +141,14 @@ html, body{
 
 .header h1 > span, h2 > span{
 	color: #f7313b;
+}
+
+.logged_panel p, form{
+    display: inline-block;
+}
+
+.logged_panel{
+    float: right;
 }
 
 /* navigation style */

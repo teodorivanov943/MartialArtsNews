@@ -23,11 +23,11 @@
                     <td><?php echo $new['created_at']; ?></td>
                     <td><?php echo $new['last_update']; ?></td>
                     <td>
-                        <a class="btn btn-warning" href="admin_news_edit.php?news_id=<?php echo $new['id']; ?>"
+                        <a class="btn btn-warning" href="admin_news_edit.php?news_id=<?php echo $new['news_id']; ?>"
                            role="button">Редактирай</a>
                     </td>
                     <td>
-                        <a class="btn btn-danger" href="admin_news_delete.php?news_id=<?php echo $new['id']; ?>"
+                        <a class="btn btn-danger" href="admin_news_delete.php?news_id=<?php echo $new['news_id']; ?>"
                            role="button">Изтрий</a>
                     </td>
                 </tr>

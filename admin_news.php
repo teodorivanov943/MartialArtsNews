@@ -1,9 +1,9 @@
 <?php
-include (DIRECTORY_SEPARATOR.'bootstrap.php');
+include 'bootstrap.php';
 
-$db = DB::getInstance();
-$query = 'SELECT * FROM news';
-$news = $db->runQuery($query);
+$query = 'SELECT * FROM News WHERE deleted = ?';
+$param[] = 0;
+$news = Model::runQuery($query, $param);
 
 $view = new View('view', 'admin_template');
-echo $view->render('admin_news', array('news' => $news));
+$view->render('admin_news', array('news' => $news));

@@ -17,9 +17,17 @@
             <header class="header">
                 <h1>Martial Arts <span>News</span></h1>
             </header>
+            <?php if (isset($user)):?> 
+            <div class="logged_panel">
+                <p>Здравей, <?php echo $user->username;?></p>
+                <form action="logout.php" method="POST">
+                    <input type="submit" class="submit_btn" value="Изход"/>
+                </form>
+            </div>
+            <?php endif;?>
             <nav class="navigation">
                 <ul>
-                    <li><a class="<?php if(isset($activeNavPage['index'])) echo 'active'; ?>" href="index.php">НАЧАЛО</a></li>
+                    <li><a href="index.php">НАЧАЛО</a></li>
                     <li>
                         <a href="category.html">КАТЕГОРИИ</a>
                         <ul class="submenu">
