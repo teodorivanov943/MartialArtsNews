@@ -6,11 +6,11 @@
         </header>
         <?php foreach($news as $new): ?>
         <article class="article">
-            <h3><?php echo $new['title']; ?></h3>
-            <img src="assets/img/<?php echo $new['photo'];?>" alt="<?php echo $new['photo']?>" height="150" width="150"/>
+            <h3><?php echo $new->title; ?></h3>
+            <img src="assets/img/<?php echo $new->photo;?>" alt="<?php echo $new->photo?>" height="150" width="150"/>
             <p><?php
                     mb_internal_encoding("UTF-8");
-                    echo mb_substr($new['content'], 0, 170) . '...'; 
+                    echo mb_substr($new->content, 0, 170) . '...'; 
             ?></p>
         </article>
         <?php endforeach; ?>

@@ -88,6 +88,28 @@ class Model
         return $result;
     }
 
+    public function update(array $params)
+    {
+        $query = 'UPDATE ' . self::getTableName() . ' SET ';
+        $iterCnt = 0;
+        
+        foreach ($params as $key => $value)
+        {
+            $iterCnt++;
+            if($iterCnt == count($params))
+            {
+                $query = $query . $key.' =?';
+                break;
+            }
+            $query = $query . $key.' =?, ';
+        }
+        $query = $query . ' WHERE ' . strtolower(self::getTableName()) . '_id=?';
+        $params[] = $this->__get(strtolower(self::getTableName() . '_id'));
+        
+        self::runQuery($query, $params);
+        
+    }
+    
     public function save()
     {
         //TODO: Move to queryBuilder
@@ -162,11 +184,12 @@ class Model
         return $result;
     }
 
-    public static function where(array $params)
+    public static function where(array $params, $resultType = DB::SINGLE_RESULT)
     {        
         $query = 'SELECT * FROM ' . self::getTableName() . ' WHERE ';
         $values = array();
         $iterCnt = 0;
+        
         foreach ($params as $key => $val)
         {
             $iterCnt++;
@@ -180,18 +203,40 @@ class Model
             $query = $query . $key . ' = ? AND '; 
             $values[] = $val;
         }
-        //echo '<pre>'.print_r($values, true).'</pre>';
-        $result = self::$connection->runQuery($query, $values, DB::SINGLE_RESULT);
-        //$result ? return $result : return NULL;
-        return ($result) ? self::create($result) : NULL;
+        
+        $params = self::$connection->runQuery($query, $values, $resultType);
+        
+        if(!$params)
+        {
+            return NULL;
+        }
+        
+        if($resultType == DB::SINGLE_RESULT)
+        {
+            $result = self::create($params);
+        }
+        else
+        {
+            foreach($params as $param)
+            {
+                $result[] = self::create($param);
+            }
+        }
+        
+        return $result;
     }
     
     public static function getAll()
     {
         $query = 'SELECT * FROM ' . self::getTableName();
-
-        $result = self::$connection->runQuery($query);
-
+        
+        $params = Model::runQuery($query);
+        
+        foreach($params as $param)
+        {
+            $result[] = self::create($param);
+        }
+        
         return $result;
     }
 

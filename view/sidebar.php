@@ -1,53 +1,45 @@
 <aside class="sidebar">
-    <form action="login.php" method="POST" <?php if(isset($user)) echo 'style="display: none;"';?> class="reg_form">
+    <form action="login.php" method="POST" <?php if (isset($user)) echo 'style="display: none;"'; ?> class="reg_form">
         <div class="register">
             <label>Потребителско име</label>
             <input type="text" name="username">
         </div>
-        
+
         <div class="register">
             <label>Парола</label>
             <input type="password" name="password">
         </div>
-        
-        <input class="submit_btn" type="submit" value="Log in">
-        <a href="registration.php">Registration</a>
-    </form>
-    <?php if(isset($loginError)): ?>
-        
-            <p> <?php echo $loginError; ?> </p>
-           
-    <?php endif;?>
-    <section class="box survey">
-        <header class="survey_header">
-            <h2>Анкета</h2>
-        </header>
-        <p>Кого бихте определили като най-велик боксьор в историята на спорта?</p>
-        <form method="post" action="index.php.html" onsubmit="return false;">
-            <div class="survey_row">
-                <input id="1" type="radio" name="survey" value="1"/>
-                <span class="survey_text 1">Мохамед Али</span>
-            </div>
-            <div class="survey_row">
-                <input id="2" type="radio" name="survey" value="2"/>
-                <span class="survey_text 2">Роки Марчиано</span>
-            </div>
-            <div class="survey_row">
-                <input id="3" type="radio" name="survey" value="3"/>
-                <span class="survey_text 3">Майк Тайсън</span>
-            </div>
-            <div class="survey_row">
-                <input id="4" type="radio" name="survey" value="4"/>
-                <span class="survey_text 4">Флойд Мейуедър</span>
-            </div>
-            <div class="survey_row">
-                <input id="5" type="radio" name="survey" value="5"/>
-                <span class="survey_text 5">Джо Луис</span>
-            </div>
 
-            <input class="submit_btn" type="submit" value="Гласувай" onclick="vote()">
-        </form>
-    </section>
+        <input class="submit_btn" type="submit" value="Вход">
+        <a href="registration.php">Регистрация</a>
+    </form>
+    <?php if (isset($loginError)): ?>
+
+        <p class="error"> <?php echo $loginError; ?> </p>
+
+    <?php endif; ?>
+
+    <?php if (isset($survey)) : ?>
+
+        <section class="box survey">
+            <header class="survey_header">
+                <h2>Анкета</h2>
+            </header>
+            <p><?php echo $survey->question ?></p>
+            <form method="post" action="index.php" onsubmit="return false;">
+                <?php $iterCnt = 0;?>
+                <?php foreach ($options as $opt) : ?>
+                    <?php $iterCnt++; ?>
+                    <div class="survey_row">
+                        <input type="radio" name="survey" value="<?php echo $iterCnt; ?>"/>
+                        <span class="survey_text"><?php echo $opt->name; ?></span>
+                    </div>
+                <?php endforeach; ?>
+                    <input id="vote" class="submit_btn" type="submit" value="Гласувай">
+            </form>
+        </section>
+    <?php endif; ?>
+
     <section class="box social_networks">
         <header class="social_header">
             <h2>Social <span>networks</span></h2>

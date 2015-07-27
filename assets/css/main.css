@@ -48,7 +48,7 @@ html, body{
 
 .content{
 	float: left;
-	width: 640px
+	width: 640px;
 }
 
 
@@ -67,6 +67,14 @@ html, body{
         display: block;
         width: 65%;
         clear: both;
+}
+
+.error{
+    color: #f7313b;
+}
+
+.success{
+    color: #009933;
 }
 
 .sidebar{
@@ -340,7 +348,6 @@ html, body{
 }
 /* survey */
 .survey_row {
-	height: 30px;
 	border-bottom: 1px solid grey;
 	margin-bottom: 10px;
 }

@@ -1,17 +1,25 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of Survey
- *
- * @author teodor
- */
-class Survey
+class Survey extends Model
 {
-    //put your code here
+    public static function findSurvey($survey_id)
+    {
+        
+        $query = 'SELECT * FROM Survey '
+        .           'LEFT JOIN survey_options ON Survey.survey_id = survey_options.survey_id '
+        .            'WHERE Survey.survey_id=?';
+    
+        $param[] = $survey_id;
+        
+        $result = self::runQuery($query, $param);
+        
+        return $result;
+    }
+    
+    public function getOptions()
+    {
+        $result = Survey_options::where(array('survey_id' => $this->survey_id), DB::MULTIPLE_RESULT);
+    
+        return $result;
+    }
 }

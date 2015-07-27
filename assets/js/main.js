@@ -15,6 +15,13 @@ $(document).ready(function(){
         }
     };
 
+    //alert error for voting without being logged
+    $('#vote').click(function(){
+        var user = document.getElementById('logged_user');
+        if(!user)
+            alert('Трябва да сте влезли в профила си, за да гласувате');
+    });
+
     //share code
 
     $('.share').click(function(){

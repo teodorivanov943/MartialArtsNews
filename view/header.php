@@ -2,29 +2,34 @@
 <html>
     <head lang="bg">
         <meta charset="UTF-8">
-        
+
         <link rel="stylesheet" href="assets/css/normalize.css"/>
         <link rel="stylesheet" href="assets/css/main.css"/>
-        
+
         <script src="assets/js/jquery-2.1.3.min.js"></script>
         <script src="assets/js/main.js"></script>
-        
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Martial Arts News">
+        <meta name="keywords" content="Martial Arts News">
+        <meta name="author" content="Teodor Ivanov">
+
         <title>Martial Arts News</title>
     </head>
     <body>
-        
+
         <div class="container">
             <header class="header">
                 <h1>Martial Arts <span>News</span></h1>
             </header>
-            <?php if (isset($user)):?> 
-            <div class="logged_panel">
-                <p>Здравей, <?php echo $user->username;?></p>
-                <form action="logout.php" method="POST">
-                    <input type="submit" class="submit_btn" value="Изход"/>
-                </form>
-            </div>
-            <?php endif;?>
+            <?php if (isset($user)): ?> 
+                <div class="logged_panel">
+                    <p id="logged_user">Здравей, <?php echo $user->username; ?></p>
+                    <form action="logout.php" method="POST">
+                        <input type="submit" class="submit_btn" value="Изход"/>
+                    </form>
+                </div>
+            <?php endif; ?>
             <nav class="navigation">
                 <ul>
                     <li><a href="index.php">НАЧАЛО</a></li>
@@ -45,4 +50,4 @@
                     <li><a href="contact.html">ЗА КОНТАКТИ</a></li>
                 </ul>
             </nav>
-        <section class="main">
+            <section class="main">

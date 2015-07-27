@@ -1,6 +1,8 @@
 <?php
 include 'bootstrap.php';
 include 'classes/User.php';
+include 'classes/Survey.php';
+include 'classes/Survey_options.php';
 
 $view = new View('view', 'template');
 
@@ -22,22 +24,22 @@ if(!empty($_POST))
     if (!(strlen($username) > 4 && strlen($username) < 25) ||
             !preg_match('/^[a-zA-Z]+$/', $username[0]) || !preg_match("/^[a-zA-Z0-9_ ]+$/", $username))
     {
-        $errors[] = 'Невалидно потребителско име';
+        $errors['username'] = 'Невалидно потребителско име';
     }
     
     if (!(strlen($password) > 4 && strlen($password) < 25))
     {
-        $errors[] = 'Невалидна парола';
+        $errors['password'] = 'Невалидна парола';
     }
     
     if($password != $confirmPass)
     {
-        $errors[] = 'Несъответстващи пароли';
+        $errors['match_pass'] = 'Несъответстващи пароли';
     }
     
     if (!(strlen($email) > 6 && strlen($email) < 50 || filter_var($email, FILTER_VALIDATE_EMAIL)))
     {
-        $errors[] = 'Невалиден e-mail';
+        $errors['email'] = 'Невалиден e-mail';
     }    
     if(empty($errors))
     {
@@ -47,24 +49,33 @@ if(!empty($_POST))
         }
         catch(Exception $e)
         {
-            $msg[] = 'Database save problem';
-            $view->addParam('msg', $msg);
+            $errors['database'] = 'Database save problem';
+            $view->addParam('errors', $errors);
         }
         
         if(!isset($msg))
         {
-            $success[] = "Вашата регистрация е успешна";
+            $success = "Вашата регистрация е успешна";
             $user = User::create(['username' => $username, 'password' => $password, 'email' => $email]);
             $user->save();
-            $view->addParam('msg', $success);
+            $view->addParam('success', $success);
         }
         
     }
     else
     {
-        $view->addParam('msg', $errors);
+        $view->addParam('errors', $errors);
     }
     
 }
+
+$survey_id = file_get_contents('assets/survey_id.txt');
+
+$survey = Survey::where(array('survey_id' => $survey_id));
+$survey_options = Survey_options::where(array('survey_id' => $survey_id),
+                                                                        DB::MULTIPLE_RESULT);
+
+$view->addParam('survey', $survey);
+$view->addParam('options', $survey_options);
 
 $view->render('registration');

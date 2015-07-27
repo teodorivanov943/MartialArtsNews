@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Administration">
     <meta name="keywords" content="Administration">
-    <meta name="author" content="Dian Andreev">
+    <meta name="author" content="Teodor Ivanov">
 </head>
 <body>
 
@@ -31,6 +31,9 @@
             <ul class="nav navbar-nav">
                 <li>
                     <a href="admin_news.php">Новини</a>
+                </li>
+                <li>
+                    <a href="admin_surveys.php">Анкета</a>
                 </li>
                 <li>
                     <a href="logout.php">Изход</a>
